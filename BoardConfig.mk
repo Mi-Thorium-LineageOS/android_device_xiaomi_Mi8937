@@ -27,7 +27,9 @@ TARGET_OTA_ASSERT_DEVICE := land,santoni,ugg,Mi8937
 endif
 
 # Camera
+#MI8937_CAM_USE_LATEST_CAMERA_STACK := true
 MI8937_CAM_USE_RENAMED_BLOBS_L := true
+MI8937_CAM_USE_RENAMED_BLOBS_P := true
 MI8937_CAM_USE_RENAMED_BLOBS_U := true
 
 # Display
@@ -41,8 +43,20 @@ TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):init_xiaomi_mi8937
 TARGET_RECOVERY_DEVICE_MODULES := init_xiaomi_mi8937
 
 # Kernel
-BOARD_KERNEL_CMDLINE += androidboot.android_dt_dir=/non-existent androidboot.boot_devices=soc/7824900.sdhci
-TARGET_KERNEL_CONFIG := lineageos_mi8937_defconfig
+BOARD_KERNEL_CMDLINE += androidboot.boot_devices=soc/7824900.sdhci
+TARGET_KERNEL_CONFIG := \
+    vendor/msm8937-perf_defconfig \
+    vendor/xiaomi/common.config \
+    vendor/xiaomi/msm8937/common.config \
+    vendor/xiaomi/msm8937/mi8937.config \
+    vendor/xiaomi/feature/android-12.config \
+    vendor/xiaomi/feature/lineageos.config \
+    vendor/xiaomi/feature/lmkd.config
+
+ifeq ($(MI8937_CAM_USE_LATEST_CAMERA_STACK),true)
+TARGET_KERNEL_CONFIG += vendor/xiaomi-msm8937/optional/latest-camera-stack.config
+endif
+
 TARGET_KERNEL_SOURCE := kernel/xiaomi/msm8937
 
 # Partitions
@@ -81,7 +95,7 @@ BOARD_PRODUCTIMAGE_PARTITION_RESERVED_SIZE := 838860800 # 800 MB
 endif
 
 # Power
-TARGET_TAP_TO_WAKE_NODE := "/proc/sys/dev/dt2w"
+TARGET_TAP_TO_WAKE_NODE := "/proc/sys/dev/xiaomi_msm8937_touchscreen/enable_dt2w"
 
 # Properties
 TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop

@@ -63,6 +63,7 @@ vendor/lib64/sensors.ssc.so
 # rolex Package version: rolex-user 7.1.2 N2G47H V10.2.3.0.NCCMIXM release-keys
 # land Package version: land-user 6.0.1 MMB29M V10.2.2.0.MALMIXM release-keys
 # santoni Package version: santoni-user 7.1.2 N2G47H V11.0.2.0.NAMMIXM release-keys
+# prada Package version: prada-user 6.0.1 MMB29M V10.2.2.0.MCEMIXM release-keys
 # vince Package version: vince-user 8.1.0 OPM1.171019.019 V11.0.2.0.OEGMIXM release-keys
 # daisy Package version: daisy-user 10 QKQ1.191002.002 V11.0.18.0.QDLMIXM release-keys
 
@@ -74,6 +75,15 @@ etc/acdbdata/QRD/QRD_Handset_cal.acdb:vendor/etc/acdbdata/land/QRD_Handset_cal.a
 etc/acdbdata/QRD/QRD_Hdmi_cal.acdb:vendor/etc/acdbdata/land/QRD_Hdmi_cal.acdb
 etc/acdbdata/QRD/QRD_Headset_cal.acdb:vendor/etc/acdbdata/land/QRD_Headset_cal.acdb
 etc/acdbdata/QRD/QRD_Speaker_cal.acdb:vendor/etc/acdbdata/land/QRD_Speaker_cal.acdb
+
+# ACDB (prada) - from prada
+etc/acdbdata/MTP/MTP_Bluetooth_cal.acdb:vendor/etc/acdbdata/prada/MTP_Bluetooth_cal.acdb
+etc/acdbdata/MTP/MTP_General_cal.acdb:vendor/etc/acdbdata/prada/MTP_General_cal.acdb
+etc/acdbdata/MTP/MTP_Global_cal.acdb:vendor/etc/acdbdata/prada/MTP_Global_cal.acdb
+etc/acdbdata/MTP/MTP_Handset_cal.acdb:vendor/etc/acdbdata/prada/MTP_Handset_cal.acdb
+etc/acdbdata/MTP/MTP_Hdmi_cal.acdb:vendor/etc/acdbdata/prada/MTP_Hdmi_cal.acdb
+etc/acdbdata/MTP/MTP_Headset_cal.acdb:vendor/etc/acdbdata/prada/MTP_Headset_cal.acdb
+etc/acdbdata/MTP/MTP_Speaker_cal.acdb:vendor/etc/acdbdata/prada/MTP_Speaker_cal.acdb
 
 # ACDB (santoni) - from santoni
 etc/acdbdata/QRD/msm8920-sku7-snd-card/QRD_SKU7_Bluetooth_cal.acdb:vendor/etc/acdbdata/santoni/QRD_SKU7_Bluetooth_cal.acdb
@@ -1137,6 +1147,15 @@ vendor/lib64/hw/gxfingerprint.land.so
 vendor/lib64/libLp_client.so
 vendor/lib64/libLpnav.so
 vendor/lib64/libLpservice.so
+
+# Fingerprint - prada - from separated vendor tree - based on prada
+vendor/bin/prada_gx_fpd
+vendor/lib64/hw/fingerprint.prada_fpc.so
+vendor/lib64/hw/fingerprint.prada_goodix.so
+vendor/lib64/hw/gxfingerprint.prada.so
+vendor/lib64/libPp_client.so
+vendor/lib64/libPpnav.so
+vendor/lib64/libPpservice.so
 
 # Fingerprint - santoni - from separated vendor tree - based on santoni
 vendor/bin/santoni_gx_fpcmd

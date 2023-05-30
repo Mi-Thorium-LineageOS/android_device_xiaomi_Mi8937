@@ -33,6 +33,8 @@ else ifeq ($(PRODUCT_HARDWARE),Mi8937)
 PRODUCT_PACKAGES += \
     xiaomi_landtoni_overlay \
     xiaomi_landtoni_overlay_Settings \
+    xiaomi_prada_overlay \
+    xiaomi_prada_overlay_Settings \
     xiaomi_ugg_overlay
 endif
 
@@ -67,9 +69,8 @@ endif
 # Input
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/keylayout/,$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/) \
-    $(LOCAL_PATH)/keylayout/fts_ts.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/ft5346.kl \
-    $(LOCAL_PATH)/keylayout/fts_ts.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/ft5x06_720p.kl \
-    $(LOCAL_PATH)/keylayout/uinput-gf.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/gf3208.kl
+    $(foreach f, msm8917-sku5-snd-card_Button_Jack.kl msm8920-sku7-snd-card_Button_Jack.kl msm8952-sku1-snd-card_Button_Jack.kl, \
+        $(LOCAL_PATH)/keylayout/msm8952-snd-card-mtp_Button_Jack.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/$(f))
 
 # Recovery
 ifeq ($(PRODUCT_HARDWARE),Mi8937)
@@ -111,6 +112,14 @@ endif
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH)
+
+# Touch HAL
+PRODUCT_PACKAGES += \
+    vendor.lineage.touch@1.0-service.xiaomi_mi8937
+
+# Wifi
+PRODUCT_PACKAGES += \
+    WifiOverlay_prada
 
 # Inherit from vendor blobs
 ifeq ($(PRODUCT_HARDWARE),Mi8917)
