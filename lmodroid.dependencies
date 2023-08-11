@@ -2,10 +2,5 @@
   {
     "repository": "LMODroid-Devices/device_xiaomi_mithorium-common",
     "target_path": "device/xiaomi/mithorium-common"
-  },
-  {
-    "remote": "lineage",
-    "repository": "android_kernel_xiaomi_msm8937",
-    "target_path": "kernel/xiaomi/msm8937"
   }
 ]
