@@ -13,10 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Goodix
 cc_library_shared {
-    name: "fakelogprint",
-    srcs: ["fakelogprint.cpp"],
+    name: "libfakelogprint",
+    srcs: ["libfakelogprint.cpp"],
     shared_libs: ["liblog"],
     compile_multilib: "64",
     vendor: true

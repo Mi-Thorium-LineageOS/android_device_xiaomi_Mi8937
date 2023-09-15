@@ -28,12 +28,12 @@ endif
 
 # Camera
 #MI8937_CAM_USE_LATEST_CAMERA_STACK := true
-MI8937_CAM_USE_RENAMED_BLOBS_L := true
-MI8937_CAM_USE_RENAMED_BLOBS_P := true
-MI8937_CAM_USE_RENAMED_BLOBS_U := true
 
 # Display
 TARGET_SCREEN_DENSITY := 280
+
+# Filesystem
+TARGET_FS_CONFIG_GEN += $(DEVICE_PATH)/config.fs
 
 # HIDL
 DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/manifest.xml
@@ -43,10 +43,17 @@ TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):init_xiaomi_mi8937
 TARGET_RECOVERY_DEVICE_MODULES := init_xiaomi_mi8937
 
 # Kernel
+ifeq ($(PRODUCT_HARDWARE),Mi8917)
 TARGET_KERNEL_CONFIG += \
     vendor/xiaomi/msm8937/common.config \
-    vendor/xiaomi/msm8937/mi8937.config \
+    vendor/xiaomi/msm8937/mi8917.config \
     vendor/xiaomi/feature/lineageos.config
+else
+TARGET_KERNEL_CONFIG += \
+    vendor/xiaomi/msm8937/common.config \
+    vendor/xiaomi/msm8937/mi8937_exclude_mi8917.config \
+    vendor/xiaomi/feature/lineageos.config
+endif
 
 ifeq ($(MI8937_CAM_USE_LATEST_CAMERA_STACK),true)
 TARGET_KERNEL_CONFIG += vendor/xiaomi/msm8937/optional/latest-camera-stack.config
@@ -76,7 +83,7 @@ BOARD_MI8937_DYNPART_PARTITION_LIST := $(ALL_PARTITIONS)
 $(foreach p, $(call to-upper, $(SSI_PARTITIONS)), \
     $(eval BOARD_$(p)IMAGE_EXTFS_INODE_COUNT := -1))
 $(foreach p, $(call to-upper, $(TREBLE_PARTITIONS)), \
-    $(eval BOARD_$(p)IMAGE_EXTFS_INODE_COUNT := 4096))
+    $(eval BOARD_$(p)IMAGE_EXTFS_INODE_COUNT := 2048))
 
 $(foreach p, $(call to-upper, $(SSI_PARTITIONS)), \
     $(eval BOARD_$(p)IMAGE_PARTITION_RESERVED_SIZE := 83886080)) # 80 MB
@@ -84,7 +91,7 @@ $(foreach p, $(call to-upper, $(TREBLE_PARTITIONS)), \
     $(eval BOARD_$(p)IMAGE_PARTITION_RESERVED_SIZE := 41943040)) # 40 MB
 
 ifneq ($(WITH_GMS),true)
-BOARD_PRODUCTIMAGE_PARTITION_RESERVED_SIZE := 838860800 # 800 MB
+BOARD_PRODUCTIMAGE_PARTITION_RESERVED_SIZE := 1073741824 # 1024 MB
 endif
 
 # Power
@@ -100,8 +107,10 @@ TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.qcom
 VENDOR_SECURITY_PATCH := 2017-04-01
 
 # SELinux
+BOARD_ODM_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/odm
 BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
 ifeq ($(PRODUCT_HARDWARE),Mi8937)
+BOARD_ODM_SEPOLICY_DIRS += $(DEVICE_PATH)/biometrics/sepolicy-odm
 BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/biometrics/sepolicy
 endif
 

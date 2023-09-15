@@ -31,11 +31,11 @@ PRODUCT_PACKAGES += \
     xiaomi_ugglite_overlay
 else ifeq ($(PRODUCT_HARDWARE),Mi8937)
 PRODUCT_PACKAGES += \
-    xiaomi_landtoni_overlay \
-    xiaomi_landtoni_overlay_Settings \
     xiaomi_prada_overlay \
     xiaomi_prada_overlay_Settings \
-    xiaomi_ugg_overlay
+    xiaomi_ugg_overlay \
+    xiaomi_wt8937_overlay \
+    xiaomi_wt8937_overlay_Settings
 endif
 
 # Permissions
@@ -49,7 +49,8 @@ PRODUCT_COPY_FILES += \
 
 # Camera
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/blank.xml:$(TARGET_COPY_OUT_VENDOR)/etc/camera/camera_config.xml
+    $(LOCAL_PATH)/configs/blankfile:$(TARGET_COPY_OUT_ODM)/bin/mm-qcamera-daemon \
+    $(LOCAL_PATH)/configs/blankfile:$(TARGET_COPY_OUT_ODM)/etc/camera/.placeholder
 
 PRODUCT_PACKAGES += \
     camera.ulysse \
@@ -60,11 +61,20 @@ PRODUCT_PACKAGES += \
     camera.land
 endif
 
+# Filesystem
+PRODUCT_PACKAGES += \
+    e2fsck_ramdisk \
+    tune2fs_ramdisk \
+    resize2fs_ramdisk
+
 # Fingerprint
 ifeq ($(PRODUCT_HARDWARE),Mi8937)
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/blankfile:$(TARGET_COPY_OUT_ODM)/bin/gx_fpd
+
 PRODUCT_PACKAGES += \
-    android.hardware.biometrics.fingerprint@2.1-service.xiaomi_landtoni \
-    android.hardware.biometrics.fingerprint@2.1-service.xiaomi_ulysse
+    android.hardware.biometrics.fingerprint@2.1-service.xiaomi_ulysse \
+    android.hardware.biometrics.fingerprint@2.1-service.xiaomi_wt8937
 endif
 
 # Input
@@ -72,6 +82,11 @@ PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/keylayout/,$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/) \
     $(foreach f, msm8917-sku5-snd-card_Button_Jack.kl msm8920-sku7-snd-card_Button_Jack.kl msm8952-sku1-snd-card_Button_Jack.kl, \
         $(LOCAL_PATH)/keylayout/msm8952-snd-card-mtp_Button_Jack.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/$(f))
+
+# Placeholder
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/blankfile:$(TARGET_COPY_OUT_ODM)/bin/.placeholder \
+    $(LOCAL_PATH)/configs/blankfile:$(TARGET_COPY_OUT_ODM)/lib64/.placeholder
 
 # Recovery
 ifeq ($(PRODUCT_HARDWARE),Mi8937)
@@ -91,11 +106,6 @@ PRODUCT_PACKAGES += \
     init.goodix.sh
 endif
 
-# Sensors
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/blankfile:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/sensor_def_qcomdev.conf \
-    $(call find-copy-subdir-files,*,$(LOCAL_PATH)/configs/sensors/,$(TARGET_COPY_OUT_VENDOR)/etc/sensors/)
-
 # Shims
 PRODUCT_PACKAGES += \
     libshims_android \
@@ -104,10 +114,10 @@ PRODUCT_PACKAGES += \
 
 ifeq ($(PRODUCT_HARDWARE),Mi8937)
 PRODUCT_PACKAGES += \
-    fakelogprint \
+    libbinder_shim \
+    libfakelogprint \
     libshim_mutexdestroy \
-    libshim_pthreadts \
-    libshims_binder
+    libshim_pthreadts
 endif
 
 # Soong namespaces
@@ -119,8 +129,10 @@ PRODUCT_PACKAGES += \
     vendor.lineage.touch@1.0-service.xiaomi_mi8937
 
 # Wifi
+ifeq ($(PRODUCT_HARDWARE),Mi8937)
 PRODUCT_PACKAGES += \
     WifiOverlay_prada
+endif
 
 # Inherit from vendor blobs
 ifeq ($(PRODUCT_HARDWARE),Mi8917)
