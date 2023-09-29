@@ -115,9 +115,12 @@ PRODUCT_PACKAGES += \
 ifeq ($(PRODUCT_HARDWARE),Mi8937)
 PRODUCT_PACKAGES += \
     libbinder_shim \
-    libfakelogprint \
-    libshim_mutexdestroy \
-    libshim_pthreadts
+    libc_mutexdestroy_shim \
+    libc_pthreadts_shim \
+    libfakelogprint
+
+PRODUCT_COPY_FILES += \
+    prebuilts/vndk/v32/arm64/arch-arm64-armv8-a/shared/vndk-sp/libhidlbase.so:$(TARGET_COPY_OUT_ODM)/lib64/libhidlbase-v32.so
 endif
 
 # Soong namespaces
